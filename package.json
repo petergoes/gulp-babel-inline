@@ -1,0 +1,44 @@
+{
+  "name": "gulp-babel-inline",
+  "version": "0.0.1-alpha",
+  "description": "Gulp plugin to transpile inline javascript via babel.",
+  "license": "MIT",
+  "repository": "unchai/gulp-babel-inline",
+  "author": {
+    "name": "unchai",
+    "email": "dotoli21@gmail.com",
+    "url": "http://blog.tolinezip.com"
+  },
+  "scripts": {
+    "test": "gulp"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "gulp",
+    "babel",
+    "inline",
+    "es2015"
+  ],
+  "dependencies": {
+    "babel": "^6.23.0",
+    "babel-core": "^6.23.1",
+    "glob": "^7.1.1",
+    "gulp-util": "^3.0.8",
+    "replacestream": "^4.0.2",
+    "through2": "^2.0.3",
+    "vinyl-fs": "^2.4.4"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.22.0",
+    "gulp": "^3.9.1",
+    "gulp-jshint": "^2.0.4",
+    "gulp-mocha": "^3.0.1",
+    "jshint": "^2.9.4",
+    "path": "^0.12.7"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  }
+}
