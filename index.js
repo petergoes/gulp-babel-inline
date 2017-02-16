@@ -1,9 +1,11 @@
+'use strict';
+
 const through = require('through2');
 const babel = require('babel-core');
-const replacestream = require('replacestream');
 
 module.exports = function (opts) {
-  var scriptTagRegex = /<[^/>]*script[ ]*type[ ]*=['|"].*?['|"].*?>([\s\S]*)?<\/[^/>]*script>/i;
+  var scriptStartTagRegex = /<script[ ]*type[ ]*=['|"]([^'|"]*)?['|"].*?>/gm;
+  var scriptEndTagRegex = /<\/[^/>]*script>/gm;
   var options = opts || {};
 
   function transform(file, encoding, callback) {
@@ -16,14 +18,36 @@ module.exports = function (opts) {
     }
 
     if (file.isBuffer()) {
-      var contents = file.contents.toString();
-      var scriptBody = contents.match(scriptTagRegex)[1];
-      var transpiledResult = babel.transform(scriptBody, options);
-      var transpiledScript = '\n' + transpiledResult.code + '\n';
+      var contents = String(file.contents);
 
-      file.contents = new Buffer(contents.replace(scriptBody, transpiledScript));
+      var startPosition = [];
+      var endPosition = [];
 
-      return callback(null, file);
+      var match;
+      while (match = scriptStartTagRegex.exec(contents)) {
+        startPosition.push(match.index + match[0].length);
+      }
+      while (match = scriptEndTagRegex.exec(contents)) {
+        endPosition.push(match.index);
+      }
+
+      if (startPosition.length === 0 || startPosition.length !== endPosition.length) {
+        file.contents = new Buffer(contents);
+        return callback(null, file);
+      }
+
+      var stack = [];
+      startPosition.forEach((position, index) => {
+        var beforePosition = (index === 0) ? 0 : endPosition[index - 1];
+        stack.push(contents.slice(beforePosition, position));
+
+        var scriptBody = contents.slice(position, endPosition[index]);
+        var transpiledResult = babel.transform(scriptBody, options);
+        stack.push(transpiledResult.code);
+      });
+      stack.push(contents.slice(endPosition[endPosition.length - 1], contents.length));
+
+      file.contents = new Buffer(stack.join('\n'));
     }
 
     callback(null, file);
