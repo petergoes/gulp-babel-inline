@@ -4,7 +4,7 @@ const through = require('through2');
 const babel = require('babel-core');
 
 module.exports = function (opts) {
-  var scriptStartTagRegex = /<script[ ]*type[ ]*=['|"]([^'|"]*)?['|"].*?>/gm;
+  var scriptStartTagRegex = /<script[ ]*type[ ]*=['|"](application\/javascript|text\/javascript)?['|"].*?>/gm;
   var scriptEndTagRegex = /<\/[^/>]*script>/gm;
   var options = opts || {};
 

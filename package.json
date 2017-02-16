@@ -1,6 +1,6 @@
 {
   "name": "gulp-babel-inline",
-  "version": "0.0.1-alpha",
+  "version": "0.0.1-alpha.1",
   "description": "Gulp plugin to transpile inline javascript via babel.",
   "license": "MIT",
   "repository": "unchai/gulp-babel-inline",

@@ -10,7 +10,6 @@ describe('gulp-babel-inline', () => {
     gulp.src('test/assets/test01.html')
       .pipe(babelInline({presets: ['es2015']}))
       .on('data', (file) => {
-        console.log(file.contents.toString());
       })
       .once('end', () => {
         done();
